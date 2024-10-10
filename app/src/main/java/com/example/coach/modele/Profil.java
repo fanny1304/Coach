@@ -1,8 +1,15 @@
 package com.example.coach.modele;
 
+import android.util.Log;
+
+import com.example.coach.outils.MesOutils;
 import com.example.coach.outils.Serializer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class Profil implements Serializable {
 
@@ -16,6 +23,8 @@ public class Profil implements Serializable {
     private Integer taille;
     private Integer age;
     private Integer sexe;
+
+    private Date datemesure;
     private float img = 0;
     private String message = "";
 
@@ -26,11 +35,12 @@ public class Profil implements Serializable {
      * @param age
      * @param sexe 1 pour homme, 0 pour femme
      */
-    public Profil(Integer poids, Integer taille, Integer age, Integer sexe) {
+    public Profil(Date datemesure, Integer poids, Integer taille, Integer age, Integer sexe) {
         this.poids = poids;
         this.taille = taille;
         this.age = age;
         this.sexe = sexe;
+        this.datemesure = datemesure;
     }
 
     public Integer getPoids() {
@@ -47,6 +57,10 @@ public class Profil implements Serializable {
 
     public Integer getSexe() {
         return sexe;
+    }
+
+    public Date getDateMesure() {
+        return datemesure;
     }
 
     /**
@@ -84,4 +98,20 @@ public class Profil implements Serializable {
         }
         return message;
     }
+
+    public JSONObject convertToJSONObject(){
+        JSONObject jsonProfil = new JSONObject();
+        try{
+            jsonProfil.put("datemesure", MesOutils.convertDateToString(datemesure));
+            jsonProfil.put("poids", poids);
+            jsonProfil.put("taille", taille);
+            jsonProfil.put("age", age);
+            jsonProfil.put("sexe", sexe);
+
+        } catch (JSONException e) {
+            Log.d("erreur", "********** classe Profil, méthode convertToJSONObject, erreur de conversion");
+        }
+        return jsonProfil;
+    }
+
 }
